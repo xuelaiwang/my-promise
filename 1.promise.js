@@ -37,13 +37,18 @@ function Promise(executor) {
 }
 // 解析链式调用，他还要和其他的promise进行结合
 function resolvePromise (x, promise, resolve, reject) {
-
+	console.log(x === promise)
+	if (x === promise) {
+		// 自己不能等待自家完成
+		return reject(new TypeError('循环引用 死循环'));
+	}
 }
 // then方法中需要传递两个参数， 一个是成功回调onFulfilled，失败回调onRejected
 Promise.prototype.then = function (onFulfilled, onRejected) {
 	let self = this;
 	// 调用then后返回新的promise可以一直调用.then
 	let promise2 = new Promise(function (resolve, reject) {
+		console.log('sssssssss')
 		if (self.status == 'resolved') {
 			// 我们现在需要把then中成功或失败后的结果获取到 看一看是不是promise 如果是promise，执行promise取代最终promise的值
 			// 如果x是普通值就让这个返回的pomise变成成功态
